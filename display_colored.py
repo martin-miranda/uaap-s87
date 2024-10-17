@@ -26,7 +26,7 @@ with open('team_colors.txt','r') as file:
 with open('title.txt', 'r') as file:
     title = [line.strip() for line in file]
 st.title(title[0])
-st.markdown('By Martin Miranda @mc_miranda34')
+st.markdown('By Carl Miranda @mc_miranda34')
 st.markdown('Raw Box Scores from Pong Ducanes: uaap.livestats.ph')
 st.markdown('#### As of Game 34 - DLSU vs. UST (Oct. 16)')
 
