@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import seaborn as sns
-from st_aggrid import AgGrid
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 pd.options.display.float_format = "{:,.2f}".format
