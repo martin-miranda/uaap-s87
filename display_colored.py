@@ -30,7 +30,7 @@ st.markdown('By Martin Miranda @mc_miranda34')
 st.markdown('Raw Box Scores from Pong Ducanes: uaap.livestats.ph')
 st.markdown('#### As of Game 34 - DLSU vs. UST')
 
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(['Player Per-Game Stats', 'Player Per-30 Stats', 'Player Advanced Stats', 'Team Per-Game Stats', 'Team Advanced Stats', 'Glossary'])
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(['Player Per-Game Stats', 'Player Per-30 Minute Stats', 'Player Advanced Stats', 'Team Per-Game Stats', 'Team Advanced Stats', 'Glossary'])
 cm = sns.dark_palette("green", as_cmap=True)
 
 with tab1:
