@@ -69,6 +69,7 @@ with tab2:
 
 with tab3:
     st.markdown('*Note for SP: Penalties are not included due to inavailability of data.*')
+    st.markdown('*Note for WS: Values are re-normalized every after game. This should not affect rankings.*')
     st.header('All Players', divider='gray')
     df = pd.read_csv('advanced_stats.csv', index_col=['PLAYER','TEAM'])
     df = df[(df['MPG'] * df['GP']) >= df['GP'].max() * 8]
