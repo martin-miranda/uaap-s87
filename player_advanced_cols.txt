@@ -2,7 +2,6 @@ SP
 aSP
 GP
 MPG
-USG%
 EWA
 WS
 GmSc
@@ -11,6 +10,7 @@ PIE
 AV
 PER
 EFF
+USG%
 TS%
 EFG%
 PPWS
