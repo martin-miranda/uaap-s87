@@ -28,7 +28,7 @@ with open('title.txt', 'r') as file:
 st.title(title[0])
 st.markdown('By Carl Miranda @mc_miranda34')
 st.markdown('Raw Box Scores from Pong Ducanes: uaap.livestats.ph')
-st.markdown('#### As of Game 34 - DLSU vs. UST (Oct. 16)')
+st.markdown('#### As of Game 36 - AdU (Oct. 19)')
 
 tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(['Player Per-Game Stats', 'Player Per-30 Minute Stats', 'Player Advanced Stats', 'Team Per-Game Stats', 'Team Advanced Stats', 'Glossary'])
 cm = sns.dark_palette("green", as_cmap=True)
