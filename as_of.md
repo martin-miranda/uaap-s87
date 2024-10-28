@@ -1,1 +1,1 @@
-#### As of Game 38 - DLSU vs. ADMU (Oct. 26)
+#### As of Game 40 - UST vs. FEU (Oct. 27)
