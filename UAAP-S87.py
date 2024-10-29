@@ -3,6 +3,7 @@ import pandas as pd
 import seaborn as sns
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
+warnings.simplefilter(action='ignore', category=RuntimeWarning)
 pd.options.display.float_format = "{:,.2f}".format
 
 ts = pd.read_json('team_aggregate.json',orient='index')
@@ -29,8 +30,8 @@ with open('title.txt', 'r') as file:
 st.title(title[0])
 carl = "https://twitter.com/mc_miranda34"
 pong = "https://twitter.com/ompongski"
-st.link_button(label='By Carl Miranda (@mc_miranda34)', url=carl, type='secondary', icon=':material/person:')
-st.link_button(label='Raw Box Scores from Pong Ducanes (@ompongski)', url=pong, type='secondary', icon=':material/insert_chart:')
+st.link_button(label='By Carl Miranda (@mc_miranda34)', url=carl, type='primary', icon=':material/person:')
+st.link_button(label='Raw Box Scores from Pong Ducanes (@ompongski)', url=pong, type='primary', icon=':material/insert_chart:')
 with open('as_of.md','r') as f:
     markdown_content = f.read()
     st.markdown(markdown_content)
@@ -51,7 +52,7 @@ with tab1:
     st.markdown('*Note: Only qualified players are displayed, which requires an average of at least 8 MPG in all team games played.*')
 
     for team, color in teams.items():
-        st.header('{0}'.format(team), divider=color)
+        st.header('{0}'.format(team), divider='grey')
         df = pd.read_csv('./player_stats/{0}_per_game.csv'.format(team), index_col=['PLAYER', 'TEAM'])
         df = df.reindex(columns=pb_cols)
         tcm = sns.dark_palette(color, as_cmap=True)
@@ -71,7 +72,7 @@ with tab2:
     st.markdown('*Note: Only qualified players are displayed, which requires an average of at least 8 MPG in all team games played.*')
 
     for team, color in teams.items():
-        st.header('{0}'.format(team), divider=color)
+        st.header('{0}'.format(team), divider='gray')
         df = pd.read_csv('./player_stats/{0}_per_30.csv'.format(team), index_col=['PLAYER', 'TEAM'])
         df = df.reindex(columns=pb_cols)
         tcm = sns.dark_palette(color, as_cmap=True)
@@ -93,7 +94,7 @@ with tab3:
     st.markdown('*Note: Only qualified players are displayed, which requires an average of at least 8 MPG in all team games played.*')
 
     for team, color in teams.items():
-        st.header('{0}'.format(team), divider=color)
+        st.header('{0}'.format(team), divider='gray')
         df = pd.read_csv('./player_stats/{0}_advanced.csv'.format(team), index_col=['PLAYER', 'TEAM'])
         df = df.reindex(columns=pa_cols)
         tcm = sns.dark_palette(color, as_cmap=True)
