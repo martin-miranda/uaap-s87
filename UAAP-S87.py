@@ -5,6 +5,7 @@ import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 pd.options.display.float_format = "{:,.2f}".format
 
+ts = pd.read_json('team_aggregate.json',orient='index')
 # Column Lists
 with open('player_base_cols.txt', 'r') as file:
     pb_cols = [line.strip() for line in file]
@@ -40,7 +41,10 @@ cm = sns.dark_palette("green", as_cmap=True)
 with tab1:
     st.header('All Players', divider='gray')
     df = pd.read_csv('player_per_game.csv', index_col=['PLAYER','TEAM'])
-    df = df[(df['MINS'] * df['GP']) >= df['GP'].max() * 8]
+    ts_merge = df.merge(ts, left_on='TEAM', right_index=True, suffixes=['_P','_T'])
+    df['QMINS'] = ts_merge['GP_T'] * 8
+    df = df[(df['MINS'] * df['GP']) >= df['QMINS']]
+    df = df.drop(labels='QMINS', axis=1)
     df = df.reindex(columns=pb_cols)
     df = df.style.background_gradient(cmap=cm, axis=0).format("{:.2f}")
     st.write(df)
@@ -57,7 +61,10 @@ with tab1:
 with tab2:
     st.header('All Players', divider='gray')
     df = pd.read_csv('player_per_30.csv', index_col=['PLAYER', 'TEAM'])
-    df = df[(df['MINS'] * df['GP']) >= df['GP'].max() * 8]
+    ts_merge = df.merge(ts, left_on='TEAM', right_index=True, suffixes=['_P','_T'])
+    df['QMINS'] = ts_merge['GP_T'] * 8
+    df = df[(df['MINS'] * df['GP']) >= df['QMINS']]
+    df = df.drop(labels='QMINS', axis=1)
     df = df.reindex(columns=pb_cols)
     df = df.style.background_gradient(cmap=cm, axis=0).format("{:.2f}")
     st.write(df)
@@ -76,7 +83,10 @@ with tab3:
     st.markdown('*Note for WS: Values are re-normalized every after game. This should not affect rankings.*')
     st.header('All Players', divider='gray')
     df = pd.read_csv('advanced_stats.csv', index_col=['PLAYER','TEAM'])
-    df = df[(df['MPG'] * df['GP']) >= df['GP'].max() * 8]
+    ts_merge = df.merge(ts, left_on='TEAM', right_index=True, suffixes=['_P','_T'])
+    df['QMINS'] = ts_merge['GP_T'] * 8
+    df = df[(df['MPG'] * df['GP']) >= df['QMINS']]
+    df = df.drop(labels='QMINS', axis=1)
     df = df.reindex(columns=pa_cols)
     df = df.style.background_gradient(cmap=cm, axis=0).format("{:.2f}")
     st.write(df)
