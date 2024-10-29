@@ -91,7 +91,6 @@ with tab3:
 with tab4:
     st.header('All Teams', divider='gray')
     df = pd.read_csv('team_per_game.csv', index_col=['TEAM'])
-    df['W%'] = df['W'] / df['GP']
     df = df.reindex(columns=tb_cols)
     df = df.style.background_gradient(cmap=cm, axis=0).format("{:.2f}")
     st.write(df)
