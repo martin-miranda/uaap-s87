@@ -11,8 +11,8 @@ AV
 PER
 EFF
 USG%
-TS%
 EFG%
+TS%
 PPWS
 FTR
 AST/TO
