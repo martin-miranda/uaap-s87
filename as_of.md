@@ -1,1 +1,1 @@
-#### As of Game 40 - UST vs. FEU (Oct. 27)
+#### As of Game 42 - DLSU (Oct. 30)
