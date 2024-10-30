@@ -6,7 +6,6 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 warnings.simplefilter(action='ignore', category=RuntimeWarning)
 pd.options.display.float_format = "{:,.2f}".format
 
-
 ts = pd.read_json('team_aggregate.json',orient='index')
 # Column Lists
 with open('player_base_cols.txt', 'r') as file:
