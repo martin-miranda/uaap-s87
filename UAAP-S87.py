@@ -6,6 +6,7 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 warnings.simplefilter(action='ignore', category=RuntimeWarning)
 pd.options.display.float_format = "{:,.2f}".format
 
+
 ts = pd.read_json('team_aggregate.json',orient='index')
 # Column Lists
 with open('player_base_cols.txt', 'r') as file:
@@ -27,6 +28,13 @@ with open('team_colors.txt','r') as file:
 
 with open('title.txt', 'r') as file:
     title = [line.strip() for line in file]
+
+st.set_page_config(
+    page_title='{0}'.format(title[0]),
+    page_icon=':basketball:',
+    layout='wide'
+)
+
 st.title(title[0])
 carl = "https://twitter.com/mc_miranda34"
 pong = "https://twitter.com/ompongski"
