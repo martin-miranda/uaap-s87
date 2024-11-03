@@ -9,7 +9,6 @@ PPWS
 FTR
 AR
 hAST%
-pAST%
 TOR
 hTO%
 STL%
