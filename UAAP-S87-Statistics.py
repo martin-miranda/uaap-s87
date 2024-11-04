@@ -163,7 +163,7 @@ with tab7:
     st.header('All Teams', divider='gray')
     df = pd.read_csv('team_advanced.csv', index_col=['TEAM'])
     df = df.reindex(columns=ta_cols)
-    df = df.style.background_gradient(cmap=cm, axis=0).background_gradient(cmap=r_cm, axis=0, subset=['DEF','TOR','HHI','Py-L']).format("{:.2f}")
+    df = df.style.background_gradient(cmap=cm, axis=0).background_gradient(cmap=r_cm, axis=0, subset=['DEF','TOR','hTO%','HHI','Py-L']).format("{:.2f}")
     st.write(df)
 
 with tab8:
