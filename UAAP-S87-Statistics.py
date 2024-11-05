@@ -1,4 +1,6 @@
 import streamlit as st
+import os
+import plotly.graph_objects as go
 import pandas as pd
 import seaborn as sns
 import warnings
@@ -43,7 +45,7 @@ with open('as_of.md','r') as f:
     markdown_content = f.read()
     st.markdown(markdown_content)
 
-tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(['Player Per-Game Stats', 'Player Per-30 Minute Stats', 'Player Advanced Stats', 'Player Comparison', 'Team Per-Game Stats', 'Opponent Per-Game Stats', 'Team Advanced Stats', 'Glossary'])
+tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs(['Player Per-Game Stats', 'Player Per-30 Minute Stats', 'Player Advanced Stats', 'Player Comparison', 'Player Trajectory', 'Team Per-Game Stats', 'Opponent Per-Game Stats', 'Team Advanced Stats', 'Glossary'])
 cm = sns.dark_palette("green", as_cmap=True)
 r_cm = sns.dark_palette("green", as_cmap=True, reverse=True)
 
@@ -143,15 +145,125 @@ with tab4:
         frozen_df3 = frozen_df3.style.background_gradient(cmap=cm, axis=0).background_gradient(cmap=r_cm, axis=0, subset=['TOR','DRtg']).format("{:.2f}")
         st.write(frozen_df3)
 
-
 with tab5:
+    st.header('Player Trajectory')
+    st.markdown('Use this tab to see the trajectory of a player\'s statistic across his games played, and compare it to the trajectory of the league average.')
+    st.markdown('*This page uses the same data as in other tabs. Refer to notes in other tabs if necessary.*')
+    
+    st.header('Player Per-Game Stats') 
+    df1 = pd.read_csv('player_per_game.csv', index_col=['PLAYER'])
+    df1 = df1.reindex(columns=pb_cols)
+    col1, col2 = st.columns(2)
+    with col1:
+        target_player = st.selectbox(
+            label='Select Player',
+            options=df1.index.tolist(),
+            index=None,
+            placeholder='Select Player'
+        )
+    with col2:
+        stat = st.selectbox(
+            label='Select Stat',
+            options=df1.columns.tolist(),
+            index=None,
+            placeholder='Select Stat'
+        )
+    
+    if stat != None and target_player != None:
+        base_directory = 'trajectory'
+        league_player = 'League'
+        player_data = pd.DataFrame(columns=['GP', stat])
+        league_data = pd.DataFrame(columns=['GP', stat])
+
+        game_directories = [d for d in os.listdir(base_directory) if d.startswith('game_')]
+        game_directories.sort()
+
+        for game_dir in game_directories:
+            game_directory = os.path.join(base_directory, game_dir)
+            file_path = os.path.join(game_directory, 'player_per_game.csv')
+            df = pd.read_csv(file_path, index_col=['PLAYER'])
+            if target_player in df.index:
+                player_game_data = df.loc[target_player, ['GP', stat]]
+                player_data = pd.concat([player_data, player_game_data.to_frame().T])
+            if league_player in df.index:
+                league_game_data = df.loc[league_player, ['GP', stat]]
+                league_data = pd.concat([league_data, league_game_data.to_frame().T])
+
+        player_data = player_data.drop_duplicates(subset='GP', keep='first')
+        player_data = player_data.sort_values(by='GP')
+        league_data = league_data.drop_duplicates(subset='GP', keep='first')
+        league_data = league_data.sort_values(by='GP')
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=player_data['GP'], y=player_data[stat], mode='lines+markers',
+                                 name=target_player, line=dict(color='green', width=2),
+                                 marker=dict(size=6, color='green', symbol='circle')))
+        fig.add_trace(go.Scatter(x=league_data['GP'], y=league_data[stat], mode='lines',
+                                 name='League Average', line=dict(color='blue', width=2)))
+
+        fig.update_layout(xaxis_title='Games Played (GP)', yaxis_title=stat, showlegend=True, template='plotly')
+        st.plotly_chart(fig)
+
+    st.header('Advanced Stats') 
+    df3 = pd.read_csv('advanced_stats.csv', index_col=['PLAYER'])
+    df3 = df3.reindex(columns=pa_cols)
+    col1, col2 = st.columns(2)
+    with col1:
+        target_player = st.selectbox(
+            label='Select Player',
+            options=df3.index.tolist(),
+            index=None,
+            placeholder='Select Player'
+        )
+    with col2:
+        stat = st.selectbox(
+            label='Select Stat',
+            options=df3.columns.tolist(),
+            index=None,
+            placeholder='Select Stat'
+        )
+    
+    if stat != None and target_player != None:
+        base_directory = 'trajectory'
+        league_player = 'League'
+        player_data = pd.DataFrame(columns=['GP', stat])
+        league_data = pd.DataFrame(columns=['GP', stat])
+
+        game_directories = [d for d in os.listdir(base_directory) if d.startswith('game_')]
+        game_directories.sort()
+
+        for game_dir in game_directories:
+            game_directory = os.path.join(base_directory, game_dir)
+            file_path = os.path.join(game_directory, 'advanced_stats.csv')
+            df = pd.read_csv(file_path, index_col=['PLAYER'])
+            if target_player in df.index:
+                player_game_data = df.loc[target_player, ['GP', stat]]
+                player_data = pd.concat([player_data, player_game_data.to_frame().T])
+            if league_player in df.index:
+                league_game_data = df.loc[league_player, ['GP', stat]]
+                league_data = pd.concat([league_data, league_game_data.to_frame().T])
+
+        player_data = player_data.drop_duplicates(subset='GP', keep='first')
+        player_data = player_data.sort_values(by='GP')
+        league_data = league_data.drop_duplicates(subset='GP', keep='first')
+        league_data = league_data.sort_values(by='GP')
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=player_data['GP'], y=player_data[stat], mode='lines+markers',
+                                 name=target_player, line=dict(color='green', width=2),
+                                 marker=dict(size=6, color='green', symbol='circle')))
+        fig.add_trace(go.Scatter(x=league_data['GP'], y=league_data[stat], mode='lines',
+                                 name='League Average', line=dict(color='blue', width=2)))
+
+        fig.update_layout(xaxis_title='Games Played (GP)', yaxis_title=stat, showlegend=True, template='plotly')
+        st.plotly_chart(fig)
+
+with tab6:
     st.header('All Teams', divider='gray')
     df = pd.read_csv('team_per_game.csv', index_col=['TEAM'])
     df = df.reindex(columns=tb_cols)
     df = df.style.background_gradient(cmap=cm, axis=0).background_gradient(cmap=r_cm, axis=0, subset=['L','TO','PF']).format("{:.2f}")
     st.write(df)
 
-with tab6:
+with tab7:
     st.header('All Teams', divider='gray')
     df = pd.read_csv('opp_per_game.csv', index_col=['TEAM'])
     df = df.reindex(columns=tb_cols)
@@ -159,14 +271,14 @@ with tab6:
     df = df.style.background_gradient(cmap=r_cm, axis=0).background_gradient(cmap=cm, axis=0, subset=['TO','PF']).format("{:.2f}")
     st.write(df)
 
-with tab7:
+with tab8:
     st.header('All Teams', divider='gray')
     df = pd.read_csv('team_advanced.csv', index_col=['TEAM'])
     df = df.reindex(columns=ta_cols)
-    df = df.style.background_gradient(cmap=cm, axis=0).background_gradient(cmap=r_cm, axis=0, subset=['DEF','TOR','hTO%','HHI','Py-L']).format("{:.2f}")
+    df = df.style.background_gradient(cmap=cm, axis=0).background_gradient(cmap=r_cm, axis=0, subset=['DEF','TOR','HHI','Py-L']).format("{:.2f}")
     st.write(df)
 
-with tab8:
+with tab9:
     with open('Glossary.md','r') as f:
         markdown_content = f.read()
         st.markdown(markdown_content)
