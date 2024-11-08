@@ -1,1 +1,1 @@
-#### As of Game 44 - UP vs. NU (Nov. 3)
+#### As of Game 46 - NU vs. UST (Nov. 6)
