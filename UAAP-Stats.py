@@ -101,7 +101,7 @@ with tab3:
     df = df[(df['MPG'] * df['GP']) >= df['QMINS']]
     df = df.drop(labels='QMINS', axis=1)
     df = df.reindex(columns=pa_cols)
-    df = df.style.background_gradient(cmap=cm, axis=0).background_gradient(cmap=r_cm, axis=0, subset=['TOR','DRtg']).format("{:.2f}")
+    df = df.style.background_gradient(cmap=cm, axis=0).background_gradient(cmap=r_cm, axis=0, subset=['TOR','hTO%', 'DRtg']).format("{:.2f}")
     st.write(df)
     st.markdown('*Note: Only qualified players are displayed, which requires an average of at least 8 MPG in all team games played.*')
 
@@ -142,7 +142,7 @@ with tab4:
         st.header("Player Advanced Stats")
         frozen_df3 = df3.loc[row_indices]
         frozen_df3 = frozen_df3.reindex(columns=pa_cols)
-        frozen_df3 = frozen_df3.style.background_gradient(cmap=cm, axis=0).background_gradient(cmap=r_cm, axis=0, subset=['TOR','DRtg']).format("{:.2f}")
+        frozen_df3 = frozen_df3.style.background_gradient(cmap=cm, axis=0).background_gradient(cmap=r_cm, axis=0, subset=['TOR','hTO%','DRtg']).format("{:.2f}")
         st.write(frozen_df3)
 
 with tab5:
@@ -275,7 +275,7 @@ with tab8:
     st.header('All Teams', divider='gray')
     df = pd.read_csv('team_advanced.csv', index_col=['TEAM'])
     df = df.reindex(columns=ta_cols)
-    df = df.style.background_gradient(cmap=cm, axis=0).background_gradient(cmap=r_cm, axis=0, subset=['DEF','TOR','HHI','Py-L']).format("{:.2f}")
+    df = df.style.background_gradient(cmap=cm, axis=0).background_gradient(cmap=r_cm, axis=0, subset=['DEF','TOR', 'hTO%', 'HHI','Py-L']).format("{:.2f}")
     st.write(df)
 
 with tab9:
