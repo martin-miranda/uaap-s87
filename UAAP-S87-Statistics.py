@@ -45,7 +45,7 @@ with open('as_of.md','r') as f:
     markdown_content = f.read()
     st.markdown(markdown_content)
 
-tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs(['Player Per-Game Stats', 'Player Per-30 Minute Stats', 'Player Advanced Stats', 'Player Comparison', 'Player Trajectory', 'Team Per-Game Stats', 'Opponent Per-Game Stats', 'Team Advanced Stats', 'Glossary'])
+tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10 = st.tabs(['Player Per-Game Stats', 'Player Per-30 Minute Stats', 'Player Advanced Stats', 'Player Comparison', 'Player Trajectory', 'Team Per-Game Stats', 'Opponent Per-Game Stats', 'Team Advanced Stats', 'Team Comparison', 'Glossary'])
 cm = sns.dark_palette("green", as_cmap=True)
 r_cm = sns.dark_palette("green", as_cmap=True, reverse=True)
 
@@ -101,7 +101,7 @@ with tab3:
     df = df[(df['MPG'] * df['GP']) >= df['QMINS']]
     df = df.drop(labels='QMINS', axis=1)
     df = df.reindex(columns=pa_cols)
-    df = df.style.background_gradient(cmap=cm, axis=0).background_gradient(cmap=r_cm, axis=0, subset=['TOR','DRtg']).format("{:.2f}")
+    df = df.style.background_gradient(cmap=cm, axis=0).background_gradient(cmap=r_cm, axis=0, subset=['TOR','hTO%', 'DRtg']).format("{:.2f}")
     st.write(df)
     st.markdown('*Note: Only qualified players are displayed, which requires an average of at least 8 MPG in all team games played.*')
 
@@ -142,7 +142,7 @@ with tab4:
         st.header("Player Advanced Stats")
         frozen_df3 = df3.loc[row_indices]
         frozen_df3 = frozen_df3.reindex(columns=pa_cols)
-        frozen_df3 = frozen_df3.style.background_gradient(cmap=cm, axis=0).background_gradient(cmap=r_cm, axis=0, subset=['TOR','DRtg']).format("{:.2f}")
+        frozen_df3 = frozen_df3.style.background_gradient(cmap=cm, axis=0).background_gradient(cmap=r_cm, axis=0, subset=['TOR','hTO%','DRtg']).format("{:.2f}")
         st.write(frozen_df3)
 
 with tab5:
@@ -275,10 +275,41 @@ with tab8:
     st.header('All Teams', divider='gray')
     df = pd.read_csv('team_advanced.csv', index_col=['TEAM'])
     df = df.reindex(columns=ta_cols)
-    df = df.style.background_gradient(cmap=cm, axis=0).background_gradient(cmap=r_cm, axis=0, subset=['DEF','TOR','HHI','Py-L']).format("{:.2f}")
+    df = df.style.background_gradient(cmap=cm, axis=0).background_gradient(cmap=r_cm, axis=0, subset=['DEF','TOR', 'hTO%', 'HHI','Py-L']).format("{:.2f}")
     st.write(df)
 
 with tab9:
+    st.header('Team Comparison', divider='gray')
+    st.markdown('Use this tab to compare two or more teams more easily.')
+    df1 = pd.read_csv('team_per_game.csv', index_col='TEAM')
+    df2 = pd.read_csv('opp_per_game.csv', index_col='TEAM')
+    df3 = pd.read_csv('team_advanced.csv', index_col='TEAM')
+
+    row_indices = st.multiselect(
+        "Select Teams:",
+        options=df1.index.tolist(),
+        default=[]
+    )
+
+    if row_indices:
+        st.header("Team Per-Game Stats")
+        frozen_df1 = df1.loc[row_indices]
+        frozen_df1 = frozen_df1.reindex(columns=tb_cols)
+        frozen_df1 = frozen_df1.style.background_gradient(cmap=cm, axis=0).background_gradient(cmap=r_cm, axis=0, subset=['TO','PF']).format("{:.2f}")
+        st.write(frozen_df1)
+        st.header("Opponent Stats")
+        frozen_df2 = df2.loc[row_indices]
+        frozen_df2 = frozen_df2.reindex(columns=tb_cols)
+        frozen_df2 = frozen_df2.drop(labels=['W','L','W%','MINS'], axis=1)
+        frozen_df2 = frozen_df2.style.background_gradient(cmap=r_cm, axis=0).background_gradient(cmap=cm, axis=0, subset=['TO','PF']).format("{:.2f}")
+        st.write(frozen_df2)
+        st.header("Team Advanced Stats")
+        frozen_df3 = df3.loc[row_indices]
+        frozen_df3 = frozen_df3.reindex(columns=ta_cols)
+        frozen_df3 = frozen_df3.style.background_gradient(cmap=cm, axis=0).background_gradient(cmap=r_cm, axis=0, subset=['DEF','TOR', 'hTO%', 'HHI','Py-L']).format("{:.2f}")
+        st.write(frozen_df3)
+
+with tab10:
     with open('Glossary.md','r') as f:
         markdown_content = f.read()
         st.markdown(markdown_content)
