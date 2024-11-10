@@ -1,1 +1,1 @@
-#### As of Game 46 - NU vs. UST (Nov. 6)
+#### As of Game 48 - UE vs. UST (Nov. 9)
