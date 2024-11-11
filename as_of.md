@@ -1,1 +1,1 @@
-#### As of Game 48 - UE vs. UST (Nov. 9)
+#### As of Game 50 - DLSU vs. UP (Nov. 10)
