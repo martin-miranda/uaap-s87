@@ -1,1 +1,1 @@
-#### As of Game 50 - DLSU vs. UP (Nov. 10)
+#### As of Game 52 - UE vs. ADMU (Nov. 13)
