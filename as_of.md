@@ -1,1 +1,1 @@
-#### As of Game 54 - UST vs. AdU (Nov. 16)
+#### As of Game 55 - UP vs. UE (Nov. 20)
